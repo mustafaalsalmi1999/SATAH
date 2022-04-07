@@ -1,5 +1,5 @@
 
-#we use suppport to test content as temp test directory and to add modules 
+#we use suppport to test content as temp test directory and to add modules as well as to modify toplevel
 import sys
 import tkinter as tk
 import tkinter.ttk as ttk
