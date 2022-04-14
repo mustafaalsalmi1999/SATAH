@@ -1,13 +1,9 @@
-
-
 import sys
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter.constants import *
 
-import SATAH_support
-
-class SATAH:
+class CreateUserInterface:
     def __init__(self, top=None):
         '''This class configures and populates the toplevel window.
            top is the toplevel containing window.'''
@@ -514,12 +510,14 @@ Factor''')
         self.TCombobox1_2.configure(values=self.value_list)
         self.TCombobox1_2.configure(takefocus="")
 
-def start_up():
-    SATAH_support.main()
-
-if __name__ == '__main__':
-    SATAH_support.main()
-
+def show():
+    global root
+    root = tk.Tk()
+    root.protocol( 'WM_DELETE_WINDOW' , root.destroy)
+    global _top1, _w1
+    _top1 = root
+    _w1 = CreateUserInterface(_top1)
+    root.mainloop()
 
 
 
