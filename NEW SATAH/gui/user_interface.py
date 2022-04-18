@@ -141,7 +141,7 @@ potentials File''', command=lambda:UploadAction())
         self.menubar.add_cascade(menu=self.sub_menu12,
                 label="Modulus")
         self.sub_menu12.add_command(
-                label="ASE GUI", command=lambda:ase_gui)
+                label="ASE GUI", command=ase_gui)
         self.sub_menu12.add_command(
                 label="Equation of state")
         self.sub_menu123 = tk.Menu(top,
