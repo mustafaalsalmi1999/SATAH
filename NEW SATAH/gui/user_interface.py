@@ -12,12 +12,12 @@ def UploadAction():
 
 def ase_gui():
     _top1_ase_gui=Toplevel(_top1)
-    _top1_ase_gui.geometry("200x200")
+    _top1_ase_gui.geometry("400x400")
     _top1_ase_gui.title("ASE GUI")
     my_str1=tk.StringVar()
-    l1 = tk.Label(_top1_ase_gui,texstvariable=my_str1)
+    l1 = tk.Label(_top1_ase_gui,textvariable=my_str1)
     l1.grid(row=1,column=2,padx=10,pady=30)
-    my_str1.set("Open ASE GUI")
+    my_str1.set("Open ASE GUI *make sure that you download pip in your terminal* ")
 
 
 class CreateUserInterface:
