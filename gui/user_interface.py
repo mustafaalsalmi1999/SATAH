@@ -5,6 +5,13 @@ from tkinter.constants import *
 from tkinter import *
 import tkinter as tk
 from tkinter import filedialog
+from distutils import command
+from tkinter import messagebox
+from setuptools._vendor.importlib_metadata import _top_level_declared
+
+
+def showMsg():
+    messagebox.showinfo('ASE Gui','You open ASE GUI!')
 
 def UploadAction():
     filename = filedialog.askopenfilename()
@@ -17,7 +24,10 @@ def ase_gui():
     my_str1=tk.StringVar()
     l1 = tk.Label(_top1_ase_gui,textvariable=my_str1)
     l1.grid(row=1,column=2,padx=10,pady=30)
-    my_str1.set("Open ASE GUI *make sure that you download pip in your terminal* ")
+    my_str1.set("*make sure that you download pip in your terminal* ")
+    button = Button(_top1_ase_gui,
+    text = 'Open',command = showMsg())
+    button.pack()
 
 
 class CreateUserInterface:
