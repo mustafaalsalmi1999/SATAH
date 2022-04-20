@@ -10,6 +10,15 @@ from tkinter import messagebox
 from setuptools._vendor.importlib_metadata import _top_level_declared
 
 
+import os
+import subprocess
+from ase.build import fcc111 
+from ase.visualize import view 
+
+def slab_ase_gui():
+    slab = fcc111('Cu', size=(2,2,2), vacuum=15.0) 
+    view(slab) 
+
 def showMsg():
     messagebox.showinfo('ASE Gui','You open ASE GUI!')
 
@@ -23,12 +32,12 @@ def ase_gui():
     _top1_ase_gui.title("ASE GUI")
     my_str1=tk.StringVar()
     l1 = tk.Label(_top1_ase_gui,textvariable=my_str1)
-    l1.grid(row=1,column=2,padx=10,pady=30)
+    l1.grid(row=1,column=2)
     my_str1.set("*make sure that you download pip in your terminal* ")
     button = Button(_top1_ase_gui,
-    text = 'Open',command = showMsg())
-    button.pack()
-
+    text = 'Open',command = slab_ase_gui())
+    button.pack()  
+    
 
 class CreateUserInterface:
     def __init__(self, top=None):
