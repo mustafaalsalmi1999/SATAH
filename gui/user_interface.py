@@ -8,16 +8,171 @@ from tkinter import filedialog
 from distutils import command
 from tkinter import messagebox
 from setuptools._vendor.importlib_metadata import _top_level_declared
-
-
 import os
 import subprocess
-from ase.build import fcc111 
-from ase.visualize import view 
+from ase.build import fcc111
+from ase.visualize import view
 
+
+from ase.build import bulk
+from ase.build import find_optimal_cell_shape
+import numpy as np
+from ase.build import make_supercell
+
+from time import time, localtime, strftime
+from lib2to3.fixer_util import Comma
+
+
+class Toplevel1:
+    def __init__(self, top=None):
+        '''This class configures and populates the toplevel window.
+           top is the toplevel containing window.'''
+        _bgcolor = '#d9d9d9'
+        _fgcolor = '#000000'
+        _compcolor = '#d9d9d9'
+        _ana1color = '#d9d9d9'
+        _ana2color = '#ececec'
+        self.style = ttk.Style()
+        if sys.platform == "win32":
+            self.style.theme_use('winnative')
+        self.style.configure('.',background=_bgcolor)
+        self.style.configure('.',foreground=_fgcolor)
+        self.style.configure('.',font="TkDefaultFont")
+        self.style.map('.',background=
+            [('selected', _compcolor), ('active',_ana2color)])
+
+        top.geometry("577x450+264+206")
+        top.minsize(120, 1)
+        top.maxsize(1924, 1061)
+        top.resizable(1,  1)
+        top.title("Toplevel 0")
+        top.configure(background="#d9d9d9")
+        top.configure(highlightbackground="#d9d9d9")
+        top.configure(highlightcolor="black")
+
+        self.top = top
+        self.combobox = tk.StringVar()
+
+        self.Label1 = tk.Label(self.top)
+        self.Label1.place(relx=0.139, rely=0.2, height=51, width=254)
+        self.Label1.configure(activebackground="#f9f9f9")
+        self.Label1.configure(activeforeground="black")
+        self.Label1.configure(anchor='w')
+        self.Label1.configure(background="#d9d9d9")
+        self.Label1.configure(compound='left')
+        self.Label1.configure(disabledforeground="#a3a3a3")
+        self.Label1.configure(font="-family {Segoe UI} -size 24")
+        self.Label1.configure(foreground="#000000")
+        self.Label1.configure(highlightbackground="#d9d9d9")
+        self.Label1.configure(highlightcolor="black")
+        self.Label1.configure(text='''Number of Atom''')
+
+        self.Label1_1 = tk.Label(self.top)
+        self.Label1_1.place(relx=0.104, rely=0.0, height=71, width=446)
+        self.Label1_1.configure(activebackground="#f9f9f9")
+        self.Label1_1.configure(activeforeground="black")
+        self.Label1_1.configure(anchor='w')
+        self.Label1_1.configure(background="#d9d9d9")
+        self.Label1_1.configure(compound='left')
+        self.Label1_1.configure(disabledforeground="#a3a3a3")
+        self.Label1_1.configure(font="-family {Simplified Arabic} -size 36 -weight bold")
+        self.Label1_1.configure(foreground="#f5010a")
+        self.Label1_1.configure(highlightbackground="#d9d9d9")
+        self.Label1_1.configure(highlightcolor="#d9d9d9")
+        self.Label1_1.configure(text='''Supercell Generation''')
+
+        self.menubar = tk.Menu(top,font="TkMenuFont",bg=_bgcolor,fg=_fgcolor)
+        top.configure(menu = self.menubar)
+
+        self.Label2 = tk.Label(self.top)
+        self.Label2.place(relx=0.083, rely=0.356, height=61, width=331)
+        self.Label2.configure(activebackground="#f9f9f9")
+        self.Label2.configure(activeforeground="black")
+        self.Label2.configure(anchor='w')
+        self.Label2.configure(background="#d9d9d9")
+        self.Label2.configure(compound='left')
+        self.Label2.configure(disabledforeground="#a3a3a3")
+        self.Label2.configure(font="-family {Segoe UI} -size 24")
+        self.Label2.configure(foreground="#000000")
+        self.Label2.configure(highlightbackground="#d9d9d9")
+        self.Label2.configure(highlightcolor="black")
+        self.Label2.configure(text='''Type of Solid Element''')
+
+        self.Generate = tk.Button(self.top)
+        self.Generate.place(relx=0.418, rely=0.756, height=44, width=127)
+        self.Generate.configure(activebackground="#ececec")
+        self.Generate.configure(activeforeground="#000000")
+        self.Generate.configure(background="#d9d9d9")
+        self.Generate.configure(compound='left')
+        self.Generate.configure(disabledforeground="#a3a3a3")
+        self.Generate.configure(foreground="#000000")
+        self.Generate.configure(highlightbackground="#d9d9d9")
+        self.Generate.configure(highlightcolor="black")
+        self.Generate.configure(pady="0")
+        self.Generate.configure(text='''Generate''', command=supercell)
+
+        self.Entry1 = tk.Entry(self.top)
+        self.Entry1.place(relx=0.711, rely=0.222, height=30, relwidth=0.208)
+        self.Entry1.configure(background="white")
+        self.Entry1.configure(disabledforeground="#a3a3a3")
+        self.Entry1.configure(font="TkFixedFont")
+        self.Entry1.configure(foreground="#000000")
+        self.Entry1.configure(highlightbackground="#d9d9d9")
+        self.Entry1.configure(highlightcolor="black")
+        self.Entry1.configure(insertbackground="black")
+        self.Entry1.configure(selectbackground="blue")
+        self.Entry1.configure(selectforeground="white")
+
+        self.Label3 = tk.Label(self.top)
+        self.Label3.place(relx=0.033, rely=0.533, height=41, width=369)
+        self.Label3.configure(activebackground="#f9f9f9")
+        self.Label3.configure(activeforeground="black")
+        self.Label3.configure(anchor='w')
+        self.Label3.configure(background="#d9d9d9")
+        self.Label3.configure(compound='left')
+        self.Label3.configure(disabledforeground="#a3a3a3")
+        self.Label3.configure(font="-family {Segoe UI} -size 24")
+        self.Label3.configure(foreground="#000000")
+        self.Label3.configure(highlightbackground="#d9d9d9")
+        self.Label3.configure(highlightcolor="black")
+        self.Label3.configure(text='''Type of Unit Cell Structre''')
+
+        self.TCombobox1 = ttk.Combobox(self.top)
+        self.TCombobox1.place(relx=0.693, rely=0.4, relheight=0.047
+                , relwidth=0.248)
+        self.value_list = ['Cu','Zn','Au','Cl','Na','Al',]
+        self.TCombobox1.configure(values=self.value_list)
+        self.TCombobox1.configure(textvariable=self.combobox)
+        self.TCombobox1.configure(takefocus="")
+
+        self.TCombobox2 = ttk.Combobox(self.top)
+        self.TCombobox2.place(relx=0.693, rely=0.556, relheight=0.047
+                , relwidth=0.248)
+        self.value_list = ['FCC','Cubic Closed Packed',]
+        self.TCombobox2.configure(values=self.value_list)
+        self.TCombobox2.configure(takefocus="")
+        self.tooltip_font = "TkDefaultFont"
+
+def show():
+    global root
+    root = tk.Tk()
+    root.protocol( 'WM_DELETE_WINDOW' , root.destroy)
+    global _top0, _w2
+    _top0 = root
+    _w2 = CreateUserInterface(_top0)
+    root.mainloop()
+
+
+def supercell():
+
+    conf = bulk('Au')
+    P = find_optimal_cell_shape(conf.cell, 200, 'sc')
+    supercell = make_supercell(conf, P)
+    view(supercell)
+    
 def slab_ase_gui():
-    slab = fcc111('Cu', size=(2,2,2), vacuum=15.0) 
-    view(slab) 
+    slab = fcc111('Cu', size=(2,2,2), vacuum=15.0)
+    view(slab)
 
 def showMsg():
     messagebox.showinfo('ASE Gui','You open ASE GUI!')
@@ -25,6 +180,7 @@ def showMsg():
 def UploadAction():
     filename = filedialog.askopenfilename()
     print('Selected:', filename)
+
 
 def ase_gui():
     _top1_ase_gui=Toplevel(_top1)
@@ -36,8 +192,9 @@ def ase_gui():
     my_str1.set("*make sure that you download pip in your terminal* ")
     button = Button(_top1_ase_gui,
     text = 'Open',command = slab_ase_gui())
-    button.pack()  
-    
+    button.pack()
+
+
 
 class CreateUserInterface:
     def __init__(self, top=None):
@@ -162,7 +319,7 @@ potentials File''', command=lambda:UploadAction())
         self.sub_menu12.add_command(
                 label="ASE GUI", command=ase_gui)
         self.sub_menu12.add_command(
-                label="Equation of state")
+                label="Supercell creation", command=Toplevel1)
         self.sub_menu123 = tk.Menu(top,
                 activebackground="#ececec",
                 activeborderwidth=1,
