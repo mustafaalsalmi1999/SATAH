@@ -1,7 +1,7 @@
 '''
 Created on 15 Apr 2022
 
-@author: kltsa
+@author: mustafa
 '''
 import sys
 from gui import user_interface
